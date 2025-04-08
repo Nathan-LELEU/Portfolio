@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - LELEU Nathan</title>
+    <link rel="stylesheet" href="assets\style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap">
+</head>
+<body>
+
+    <!-- Barre de navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#profil">Profil</a>
+            <a href="#competences">Compétences</a>
+            <a href="#projets">Projets</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Section Profil -->
+    <section id="profil" class="section">
+        <div class="hero-section">
+            <header>
+                <div class="profil-container">
+                    <img src="https://i.pinimg.com/736x/dc/9c/61/dc9c614e3007080a5aff36aebb949474.jpg" alt="Photo de profil" class="profil-photo">
+                    <h1>LELEU Nathan</h1>
+                    <p>Je suis actuellement en formation Bachelor IT et je recherche une alternance pour septembre 2025. Passionné par la technologie et la créativité, je souhaite contribuer à des projets innovants.</p>
+                    <a href="assets\LELEU Nathan CV.pdf" class="cv-download" download>Télécharger mon CV</a>
+                </div>
+            </header>
+        </div>
+    </section>
+
+    <!-- Section Compétences -->
+    <section id="competences" class="section">
+        <h2>Mes Compétences</h2>
+        <div class="competences-grid">
+            <div class="skill-card">
+                <h3>HTML</h3>
+                <progress value="80" max="100"></progress>
+            </div>
+            <div class="skill-card">
+                <h3>CSS</h3>
+                <progress value="85" max="100"></progress>
+            </div>
+            <div class="skill-card">
+                <h3>Javascript</h3>
+                <progress value="60" max="100"></progress>
+            </div>
+            <div class="skill-card">
+                <h3>React</h3>
+                <progress value="50" max="100"></progress>
+            </div>
+            <div class="skill-card">
+                <h3>mySQL</h3>
+                <progress value="70" max="100"></progress>
+            </div>
+            <div class="skill-card">
+                <h3>PHP</h3>
+                <progress value="80" max="100"></progress>
+            </div>
+        </div>
+        <div class="cv-container">
+            <img src="assets\LELEU Nathan CV.jpg" alt="CV LELEU Nathan" style="max-width:50%;">
+        </div>
+    </section>
+
+    <!-- Section Projets -->
+    <section id="projets" class="section">
+        <h2>Projets</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-card">
+                    <h3>Tic-Tac-Toe</h3>
+                    <p>Jeu interactif développé en JavaScript pour illustrer mes compétences en programmation.</p>
+                    <div id="tic-tac-toe">
+                        <table>
+                            <tr>
+                                <td onclick="makeMove(0, 0)">1</td>
+                                <td onclick="makeMove(0, 1)">2</td>
+                                <td onclick="makeMove(0, 2)">3</td>
+                            </tr>
+                            <tr>
+                                <td onclick="makeMove(1, 0)">4</td>
+                                <td onclick="makeMove(1, 1)">5</td>
+                                <td onclick="makeMove(1, 2)">6</td>
+                            </tr>
+                            <tr>
+                                <td onclick="makeMove(2, 0)">7</td>
+                                <td onclick="makeMove(2, 1)">8</td>
+                                <td onclick="makeMove(2, 2)">9</td>
+                            </tr>
+                        </table>
+                        <p id="result"></p>
+                        <!-- Bouton de réinitialisation -->
+                        <button id="reset-btn" onclick="resetGame()">Réinitialiser le jeu</button>
+                    </div>
+                </div>
+                
+                <script>
+                    let board = [
+                        [1, 2, 3],
+                        [4, 5, 6],
+                        [7, 8, 9]
+                    ];
+                    let currentPlayer = 'X';
+                    let moves = 0;
+                
+                    function makeMove(row, col) {
+                        // Vérifie si la case est déjà utilisée
+                        if (typeof board[row][col] === 'number') {
+                            board[row][col] = currentPlayer;
+                            document.querySelectorAll('td')[row * 3 + col].innerHTML = currentPlayer;
+                            moves++;
+                
+                            if (checkWin()) {
+                                document.getElementById('result').innerHTML = currentPlayer + " a gagné !";
+                                disableBoard();
+                            } else if (moves === 9) {
+                                document.getElementById('result').innerHTML = "Match nul !";
+                            } else {
+                                // Change de joueur
+                                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                            }
+                        }
+                    }
+                
+                    function checkWin() {
+                        const winCombinations = [
+                            [[0, 0], [0, 1], [0, 2]],
+                            [[1, 0], [1, 1], [1, 2]],
+                            [[2, 0], [2, 1], [2, 2]],
+                            [[0, 0], [1, 0], [2, 0]],
+                            [[0, 1], [1, 1], [2, 1]],
+                            [[0, 2], [1, 2], [2, 2]],
+                            [[0, 0], [1, 1], [2, 2]],
+                            [[0, 2], [1, 1], [2, 0]]
+                        ];
+                
+                        // Vérifie chaque combinaison gagnante
+                        for (const combo of winCombinations) {
+                            const [a, b, c] = combo;
+                            if (board[a[0]][a[1]] === board[b[0]][b[1]] && board[a[0]][a[1]] === board[c[0]][c[1]]) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                
+                    function disableBoard() {
+                        // Désactive le plateau de jeu après une victoire ou match nul
+                        document.querySelectorAll('td').forEach(cell => cell.onclick = null);
+                    }
+
+                    // Fonction pour réinitialiser le jeu
+                    function resetGame() {
+                        board = [
+                            [1, 2, 3],
+                            [4, 5, 6],
+                            [7, 8, 9]
+                        ];
+                        currentPlayer = 'X';
+                        moves = 0;
+                        document.querySelectorAll('td').forEach((cell, index) => {
+                            cell.innerHTML = index + 1;
+                            cell.onclick = function() {
+                                makeMove(Math.floor(index / 3), index % 3);
+                            };
+                        });
+                        document.getElementById('result').innerHTML = "";
+                    }
+                </script>
+            </div>
+            <div class="project-card">
+                <h3>Livre d'Or</h3>
+                <p>Application en PHP avec une base SQL pour la gestion de messages interactifs.</p>
+                <!-- GIF sous le projet -->
+                <img src="assets\gif-livredor.gif" alt="GIF Livre d'Or" class="project-gif">
+            </div>
+        </div>
+        <div class="new-projects-grid">
+            <div class="project-card">
+                <h3>Gestion de Quiz</h3>
+                <p>Ce projet permet de créer, modifier et visualiser des quiz via une interface admin sécurisée.
+                    Des maquettes ont été réalisées avec Figma, et nous avons utilisé PHP, MySQL et HTML/CSS pour le développement et Git pour la gestion du travail en groupe.</p>
+            </div>
+            <div class="project-card">
+                <h3>Gestion de Menus pour Restaurateurs</h3>
+                <p>L'application permet aux restaurateurs de gérer menus, plats et ingrédients, avec des fonctionnalités de modification et suppression.
+                    Nous avons assuré une interface intuitive et sécurisé les données via PHP et MySQL.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+<section id="contact" class="section">
+    <footer>
+        <p>© 2025 - LELEU Nathan | Contact : <a href="mailto:nathan.leleu@laplateforme.io">nathan.leleu@laplateforme.io</a></p>
+        <div class="logos-container">
+            <a href="https://www.linkedin.com/in/nathan-leleu-3014852b4/" target="_blank">
+                <img src="assets\logo\linkedin.png" alt="Logo Linkedin" class="footer-logo">
+            </a>
+            <a href="https://github.com/Nathan-LELEU" target="_blank">
+                <img src="assets\logo\github.png" alt="Logo Github" class="footer-logo">
+            </a>
+            <a href="https://laplateformecybersup.grimp.io/share?profile=pqF6GHbtkEdO" target="_blank">
+                <img src="assets\logo\grimp.png" alt="Logo Grimp" class="footer-logo">
+            </a>
+        </div>
+    </footer>
+</section>
+
+</body>
+</html>
